@@ -35,7 +35,7 @@ const Login = () => {
           </button>
         </form>
         <p>
-          By Continue you to agree amazon condition of use and privacy notice.{" "}
+          By Continue you to agree amazon condition of use and privacy notice.
         </p>
       </div>
       <p>New to Amazon ?</p>

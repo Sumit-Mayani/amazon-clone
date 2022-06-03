@@ -1,6 +1,7 @@
 import * as types from "./actionTypes";
 import { auth } from "../utils/firebase";
 
+//register
 const registerStart = () => ({
   type: types.REGISTER_START,
 });
@@ -26,3 +27,5 @@ export const registerInitiate = (email, password) => {
       .catch((error) => dispatch(registerError(error.message)));
   };
 };
+
+//login
