@@ -10,9 +10,9 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Switch>
-          <Route path="/login"><Login /></Route>
-          <Route path="/register"><Register/></Route>
-          <Route path="/">
+          <Route exact path="/login"><Login /></Route>
+          <Route exact path="/register"><Register/></Route>
+          <Route exact path="/">
             <Header/>
             <Home />
           </Route>
