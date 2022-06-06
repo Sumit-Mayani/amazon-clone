@@ -1,13 +1,15 @@
 import * as types from "./actionTypes";
 import { auth } from "../utils/firebase";
 
-//set user
+//----------------- Set User on page -------------------
+
 export const setuser = (user) => ({
   type: types.SET_USER,
   payload: user,
 });
 
-//register
+//------------------ Register --------------------------
+
 const registerStart = () => ({
   type: types.REGISTER_START,
 });
@@ -34,7 +36,8 @@ export const registerInitiate = (email, password) => {
   };
 };
 
-//login
+//----------------------- Login ----------------------
+
 const loginStart = () => ({
   type: types.LOGIN_START,
 });
@@ -61,7 +64,8 @@ export const loginInitiate = (email, password) => {
   };
 };
 
-//logout
+//------------------------- Logout --------------------------
+
 const logoutStart = () => ({
   type: types.LOGOUT_START,
 });
@@ -84,3 +88,10 @@ export const logoutInitiate = () => {
       .catch((error) => dispatch(logoutError(error.message)));
   };
 };
+
+//-------------- Add To Cart ------------------
+
+export const addToCart = (item) => ({
+  type: types.ADD_TO_CART,
+  payload: item,
+});
