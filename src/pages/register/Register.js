@@ -8,21 +8,19 @@ import { registerInitiate } from "../../redux/actions";
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const history = useHistory();
   let dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.data);
 
   useEffect(() => {
-    console.log("hello")
     if (user) {
-      console.log("hello1")
       history.push("/");
     }
   }, [user, history]);
 
-  console.log("state=>", user);
+  // console.log("state=>", user);
 
   const register = (e) => {
     e.preventDefault();
