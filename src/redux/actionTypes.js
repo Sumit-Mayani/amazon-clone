@@ -23,3 +23,7 @@ export const SET_USER = "SET_USER";
 //--------------- Add To Cart -----------
 
 export const ADD_TO_CART = "ADD_TO_CART";
+
+//--------------- Remove From Basket -----------
+
+export const REMOVE_FROM_BASKET = "REMOVE_FROM_BASKET";

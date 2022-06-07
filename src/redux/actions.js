@@ -95,3 +95,10 @@ export const addToCart = (item) => ({
   type: types.ADD_TO_CART,
   payload: item,
 });
+
+//-------------- Remove From Basket ------------------
+
+export const removeFromBasket = (item) => ({
+  type: types.REMOVE_FROM_BASKET,
+  payload: item,
+});

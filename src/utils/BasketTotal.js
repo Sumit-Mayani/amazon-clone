@@ -1,0 +1,1 @@
+export const getBasketTotal = (Basket) => Basket.reduce((amount, item) => item.price + amount, 0);

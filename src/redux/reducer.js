@@ -56,6 +56,18 @@ const basketReducer = (state = initialState, action) => {
         ...state,
         basket: newBasket,
       };
+
+    // Remove From Basket
+    case types.REMOVE_FROM_BASKET:
+      let updateBaskets = [...state.basket];
+      const index = state.basket.findIndex((item) => item.id === action.payload);
+      if (index >= 0) {
+        updateBaskets.splice(index, 1);
+      }
+      return {
+        ...state,
+        basket: updateBaskets,
+      };
     default:
       return state;
   }

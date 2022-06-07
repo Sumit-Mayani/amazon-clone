@@ -11,8 +11,10 @@ const Header = () => {
 
   let dispatch = useDispatch();
 
+  //user and basket
   const { user,basket } = useSelector((state) => state.data);
 
+  // signout
   const handleSignOut = () => {
     if (user) {
       dispatch(logoutInitiate());

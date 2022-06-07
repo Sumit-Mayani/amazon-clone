@@ -31,7 +31,7 @@ const Product = ({
   return (
     <div className="product">
       <div className="info">
-        <Link to={`/products/${id}`} className="title">
+        <Link to={`/product/${id}`} className="title">
           <p>{title}</p>
         </Link>
       </div>
