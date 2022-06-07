@@ -7,14 +7,15 @@ import { getBasketTotal } from "../../utils/BasketTotal";
 import { useHistory } from "react-router-dom";
 import { db } from "../../utils/firebase";
 import { Link } from "react-router-dom";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 const Payment = () => {
   //user and basket selector
-    const { basket, user } = useSelector((state) => state.data);
+  const { basket, user } = useSelector((state) => state.data);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div className="payment">
@@ -54,12 +55,13 @@ const Payment = () => {
             <h3>Payment Method</h3>
           </div>
           <div className="payment-details">
-            <form onSubmit={handleSubmit}>
+                      <form onSubmit={handleSubmit}>
+                          <CardElement />
               <div className="payment-priceContainer">
                 <CurrencyFormat
                   renderText={(value) => (
                     <>
-                        <h3>Order Total: {value}</h3>
+                      <h3>Order Total: {value}</h3>
                     </>
                   )}
                   decimalScale={2}
@@ -68,7 +70,7 @@ const Payment = () => {
                   thousandSeparator={true}
                   prefix={"$"}
                 />
-                <button >Buy Now</button>
+                <button>Buy Now</button>
               </div>
             </form>
           </div>
