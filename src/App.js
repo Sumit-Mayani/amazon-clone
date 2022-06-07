@@ -10,6 +10,7 @@ import { setuser } from "./redux/actions";
 import { useDispatch } from "react-redux";
 import SingleProduct from "./pages/SingleProduct/SingleProduct";
 import Checkout from "./pages/Checkout/Checkout";
+import Payment from "./pages/payment/Payment";
 
 function App() {
   let dispatch = useDispatch();
@@ -28,6 +29,10 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Switch>
+        <Route path="/payment">
+            <Header />
+            <Payment />
+          </Route>
           <Route path="/checkout">
             <Header />
             <Checkout />
