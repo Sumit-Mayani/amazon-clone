@@ -102,3 +102,9 @@ export const removeFromBasket = (item) => ({
   type: types.REMOVE_FROM_BASKET,
   payload: item,
 });
+
+//--------------- Basket empty -------------------
+
+export const setBasketEmpty = () => ({
+  type: types.SET_BASKET_EMPLTY,
+})

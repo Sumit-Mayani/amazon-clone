@@ -39,6 +39,13 @@ const basketReducer = (state = initialState, action) => {
         user: action.payload,
       };
 
+    // Basket Empty
+    case types.SET_BASKET_EMPLTY:
+      return {
+        ...state,
+        basket: [],
+      };
+
     // Login && Register && Logout Fail
     case types.REGISTER_FAIL:
     case types.LOGIN_FAIL:
@@ -60,7 +67,9 @@ const basketReducer = (state = initialState, action) => {
     // Remove From Basket
     case types.REMOVE_FROM_BASKET:
       let updateBaskets = [...state.basket];
-      const index = state.basket.findIndex((item) => item.id === action.payload);
+      const index = state.basket.findIndex(
+        (item) => item.id === action.payload
+      );
       if (index >= 0) {
         updateBaskets.splice(index, 1);
       }

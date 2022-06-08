@@ -7,11 +7,11 @@ import { getBasketTotal } from "../../utils/BasketTotal";
 import { useHistory } from "react-router-dom";
 import { db } from "../../utils/firebase";
 import { Link } from "react-router-dom";
-import { CardElement, useStripe, useElements, Elements } from "@stripe/react-stripe-js";
+import { CardElement, useStripe, useElements} from "@stripe/react-stripe-js";
 import axios from "axios";
+import { setBasketEmpty } from "../../redux/actions";
 
 const Payment = () => {
-  
   //user and basket selector
   const { basket, user } = useSelector((state) => state.data);
 
@@ -34,24 +34,32 @@ const Payment = () => {
         method: "POST",
         url: `/payments/create?total=${getBasketTotal(basket) * 100}`,
       });
-      setClientSecret();
+      setClientSecret(response.data.clientSecret);
     };
     getClientSecret();
   }, [basket]);
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessing(true);
-    const payload = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement)
-      }
-    }).then(({ payment_intent }) => {
-      setSuccessced(true);
-      setError(null);
-      setProcessing(false);
-      history.push("/orders");
-    });
+    const payload = await stripe
+      .confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+      })
+      .then(({ paymentIntent }) => {
+        db.collection("users")
+          .doc(user && user.uid)
+          .collection("orders")
+          .doc(paymentIntent.id)
+          .set({ basket: basket, amount: paymentIntent.amount, created: paymentIntent.created });
+          setSuccessced(true);
+          setError(null);
+        setProcessing(false);
+        dispatch(setBasketEmpty());
+          history.replace("/orders");
+      });
   };
 
   const handleChange = (e) => {
@@ -112,7 +120,9 @@ const Payment = () => {
                   thousandSeparator={true}
                   prefix={"$"}
                 />
-                <button disabled={processing || disabled || successced}>{processing ? <p>Processing</p> : "Buy Now"}</button>
+                <button disabled={processing || disabled || successced}>
+                  <span>{processing ? <p>Processing</p> : "Buy Now"}</span>
+                </button>
               </div>
               {error && <div>{error}</div>}
             </form>

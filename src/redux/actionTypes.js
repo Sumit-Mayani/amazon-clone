@@ -27,3 +27,6 @@ export const ADD_TO_CART = "ADD_TO_CART";
 //--------------- Remove From Basket -----------
 
 export const REMOVE_FROM_BASKET = "REMOVE_FROM_BASKET";
+
+//--------------- Basket empty -------------------
+export const SET_BASKET_EMPLTY = "SET_BASKET_EMPLTY";
