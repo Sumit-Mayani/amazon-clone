@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Payment.css";
 import { useSelector, useDispatch } from "react-redux";
 import CurrencyFormat from "react-currency-format";
@@ -7,14 +7,56 @@ import { getBasketTotal } from "../../utils/BasketTotal";
 import { useHistory } from "react-router-dom";
 import { db } from "../../utils/firebase";
 import { Link } from "react-router-dom";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { CardElement, useStripe, useElements, Elements } from "@stripe/react-stripe-js";
+import axios from "axios";
 
 const Payment = () => {
+  
   //user and basket selector
   const { basket, user } = useSelector((state) => state.data);
 
-  const handleSubmit = (e) => {
+  let history = useHistory();
+
+  let dispatch = useDispatch();
+
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const [successced, setSuccessced] = useState(false);
+  const [processing, setProcessing] = useState("");
+  const [error, setError] = useState(null);
+  const [disabled, setDisabled] = useState(true);
+  const [clientSecret, setClientSecret] = useState(true);
+
+  useEffect(() => {
+    const getClientSecret = async () => {
+      const response = await axios({
+        method: "POST",
+        url: `/payments/create?total=${getBasketTotal(basket) * 100}`,
+      });
+      setClientSecret();
+    };
+    getClientSecret();
+  }, [basket]);
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    setProcessing(true);
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement)
+      }
+    }).then(({ payment_intent }) => {
+      setSuccessced(true);
+      setError(null);
+      setProcessing(false);
+      history.push("/orders");
+    });
+  };
+
+  const handleChange = (e) => {
+    setDisabled(e.empty);
+    setError(e.error ? e.error.message : "");
   };
 
   return (
@@ -55,8 +97,8 @@ const Payment = () => {
             <h3>Payment Method</h3>
           </div>
           <div className="payment-details">
-                      <form onSubmit={handleSubmit}>
-                          <CardElement />
+            <form onSubmit={handleSubmit}>
+              <CardElement onChange={handleChange} />
               <div className="payment-priceContainer">
                 <CurrencyFormat
                   renderText={(value) => (
@@ -70,8 +112,9 @@ const Payment = () => {
                   thousandSeparator={true}
                   prefix={"$"}
                 />
-                <button>Buy Now</button>
+                <button disabled={processing || disabled || successced}>{processing ? <p>Processing</p> : "Buy Now"}</button>
               </div>
+              {error && <div>{error}</div>}
             </form>
           </div>
         </div>
